@@ -99,4 +99,19 @@ describe("AWS Mock Sinon", function() {
     it("Let's you call restore before setting anything", function() {
         MockAWSSinon.restore();
     });
+
+    it("Let's you handle s3.upload", async function() {
+        MockAWSSinon('S3', 'putObject', function(params, cb) {
+            return {};
+        });
+        const resp = await new AWS.S3().upload({
+            Bucket: '123',
+            Key: 'abc',
+            Body: Buffer.from('hello world'),
+        }).promise();
+
+        assert.equal(resp.Bucket, '123');
+        assert.equal(resp.Key, 'abc');
+        assert.equal(resp.Location, 'https://s3.amazonaws.com/');
+    });
 })

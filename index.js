@@ -35,7 +35,7 @@ var processRequest = function(cb) {
     }
 
     var response = new AWS.Response();
-    response.request = this.httpRequest;
+    response.request = this;
 
     var callback = function(err, data) {
         response.data = data;
